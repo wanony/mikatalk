@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     // TODO Update the colours to match momo talk
-    <AppBar sx={{ bgcolor: "rgb(255, 102, 204)", position: "static" }}>
+    <AppBar sx={{ bgcolor: "#FF8CA1", position: "static" }}>
       <Toolbar sx={{ display: "flex" }}>
         <Logo />
         <div>

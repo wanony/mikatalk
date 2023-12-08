@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Avatar, Box, Button, IconButton, Typography } from "@mui/material";
 import { AiOutlineSend } from "react-icons/ai";
 import { useAuth } from "../context/AuthContext";
@@ -9,6 +9,7 @@ import {
   sendChatRequest,
 } from "../helpers/api-communicator";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 type Message = {
   role: "user" | "model";
@@ -37,6 +38,7 @@ type Message = {
 
 const Chat = () => {
   const auth = useAuth();
+  const navi = useNavigate();
   const chatInputRef = useRef<HTMLInputElement | null>(null);
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
 
@@ -80,6 +82,12 @@ const Chat = () => {
     }
   }, [auth]);
 
+  useEffect(() => {
+    if (!auth?.user) {
+      return navi("/login");
+    }
+  }, [auth]);
+
   return (
     <Box
       sx={{
@@ -102,8 +110,9 @@ const Chat = () => {
           sx={{
             display: "flex",
             width: "100%",
-            height: "60vh",
-            bgcolor: "rgba(255, 255, 255, 0.3)",
+            height: "100%",
+            // bgcolor: "#515E6E",
+            bgcolor: "#F3F7F8",
             borderRadius: 5,
             flexDirection: "column",
             mx: 3,
@@ -125,7 +134,7 @@ const Chat = () => {
           <Typography sx={{ mx: "auto" }}>
             You are talking with Mika!
           </Typography>
-          <Typography sx={{ mx: "auto", my: 4, padding: 3 }}>
+          <Typography sx={{ mx: "auto", my: 4, padding: 3, color: "black" }}>
             You can talk to her about anything, but avoid sharing personal
             information!
           </Typography>
@@ -191,7 +200,7 @@ const Chat = () => {
             width: "100%",
             padding: "10px",
             borderRadius: 8,
-            backgroundColor: "rgba(255, 255, 255, 0.2)",
+            backgroundColor: "#515E6E",
             display: "flex",
             margin: "auto",
           }}

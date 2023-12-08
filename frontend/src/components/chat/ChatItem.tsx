@@ -2,7 +2,7 @@ import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { darcula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 function extractCodeBlocks(message: string) {
   if (message.includes("```")) {
@@ -20,10 +20,19 @@ function isCodeBlock(str: string) {
     str.includes("}") ||
     str.includes("]") ||
     str.includes("#") ||
-    str.includes("//")
+    str.includes("//") ||
+    str.includes("(") ||
+    str.includes(")")
   ) {
     return true;
   }
+  return false;
+}
+
+function splitBlockFirstWord(block: string): string {
+  const words = block.split(" ");
+  const contentExceptFirstWord = words.slice(1).join(" ");
+  return contentExceptFirstWord;
 }
 
 function getProgrammingLanguage(str: string) {
@@ -42,7 +51,7 @@ const ChatItem = ({
 
   return role === "model" ? (
     <Box
-      sx={{ display: "flex", padding: 2, bgcolor: "#004d5612", my: 2, gap: 2 }}
+      sx={{ display: "flex", padding: 2, bgcolor: "#4C5A6E", my: 2, gap: 2 }}
     >
       <Avatar sx={{ ml: 0 }}>
         <img src="Mika_Icon.png" alt="mika" width={"30px"} />
@@ -56,20 +65,20 @@ const ChatItem = ({
           messageBlocks.map((block) =>
             isCodeBlock(block) ? (
               <SyntaxHighlighter
-                style={dark}
+                style={darcula}
                 language={getProgrammingLanguage(block)}
               >
-                {block}
+                {splitBlockFirstWord(block)}
               </SyntaxHighlighter>
             ) : (
-              <Typography sx={{ fontSize: "20px" }}> {content}</Typography>
+              <Typography sx={{ fontSize: "20px" }}>{block}</Typography>
             )
           )}
       </Box>
     </Box>
   ) : (
     <Box
-      sx={{ display: "flex", padding: 2, bgcolor: "#004d56", gap: 2, my: 2 }}
+      sx={{ display: "flex", padding: 2, bgcolor: "#4988CA", gap: 2, my: 2 }}
     >
       <Avatar sx={{ ml: 0, bgcolor: "black", color: "white" }}>
         {/* TODO change this to something more appealing later rather than name + sensei */}

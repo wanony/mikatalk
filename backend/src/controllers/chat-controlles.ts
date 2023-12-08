@@ -33,7 +33,8 @@ export const generateChatCompletion = async (
     // });
     const chatResponse = {
       role: "model",
-      content: "Hello Sensei! It's me, Mika!",
+      content:
+        'Hello Sensei! It\'s me, Mika! I know how to code, are you impressed?```python print("hello, sensei")```',
     };
     user.chats.push(chatResponse);
     await user.save();

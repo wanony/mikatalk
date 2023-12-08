@@ -11,13 +11,13 @@ const CustomTextInput = (properties: Properties) => {
   return (
     <TextField
       margin="normal"
-      InputLabelProps={{ style: { color: "white" } }}
+      InputLabelProps={{ style: { color: "black" } }}
       InputProps={{
         style: {
           width: "400px",
           borderRadius: 10,
           fontSize: 20,
-          color: "white",
+          color: "black",
         },
       }}
       name={properties.name}

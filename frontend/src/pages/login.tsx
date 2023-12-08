@@ -1,12 +1,14 @@
 import { Box, Typography, Button } from "@mui/material";
 import { IoLogIn } from "react-icons/io5";
-import React from "react";
+import React, { useEffect } from "react";
 import CustomTextInput from "../components/shared/CustomTextInput";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const auth = useAuth();
+  const navi = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -21,6 +23,12 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    if (auth?.user) {
+      return navi("/");
+    }
+  }, [auth]);
+
   return (
     <Box width={"100%"} height={"100%"} display="flex" flex={1}>
       <Box
@@ -31,7 +39,7 @@ const Login = () => {
         <img
           src="Mika_Portrait.png"
           alt="Mika"
-          style={{ width: "250px" }}
+          style={{ width: "400px" }}
         ></img>
       </Box>
       <Box
@@ -65,6 +73,7 @@ const Login = () => {
               textAlign={"center"}
               padding={2}
               fontWeight={600}
+              color={"black"}
             >
               Login
             </Typography>
@@ -78,7 +87,7 @@ const Login = () => {
                 width: "400px",
                 borderRadius: 2,
                 color: "black",
-                backgroundColor: "white",
+                backgroundColor: "#FF8CA1",
                 ":hover": {
                   bgcolor: "pink",
                   color: "black",

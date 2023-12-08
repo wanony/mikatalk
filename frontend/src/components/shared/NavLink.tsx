@@ -12,6 +12,7 @@ type Properties = {
 const NavLink = (properties: Properties) => {
   return (
     <Link
+      onClick={properties.onClick}
       className="nav-link"
       to={properties.to}
       style={{ background: properties.bg, color: properties.textColour }}

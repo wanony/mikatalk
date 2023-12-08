@@ -16,6 +16,7 @@ type User = {
   name: string;
   email: string;
 };
+
 type UserAuth = {
   isLoggedIn: boolean;
   user: User | null;
@@ -23,6 +24,7 @@ type UserAuth = {
   signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 };
+
 const AuthContext = createContext<UserAuth | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -40,6 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     checkStatus();
   }, []);
+
   const login = async (email: string, password: string) => {
     const data = await loginUser(email, password);
     if (data) {
@@ -47,6 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsLoggedIn(true);
     }
   };
+
   const signup = async (name: string, email: string, password: string) => {
     const data = await signupUser(name, email, password);
     if (data) {
@@ -54,6 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsLoggedIn(true);
     }
   };
+
   const logout = async () => {
     await logoutUser();
     setIsLoggedIn(false);
