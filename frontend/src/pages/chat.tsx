@@ -3,6 +3,7 @@ import { Avatar, Box, Button, IconButton, Typography } from "@mui/material";
 import { AiOutlineSend } from "react-icons/ai";
 import { useAuth } from "../context/AuthContext";
 import ChatItem from "../components/chat/ChatItem";
+import "../index.css";
 import {
   deleteUserChats,
   getUserChats,
@@ -208,6 +209,7 @@ const Chat = () => {
           {" "}
           <input
             type="text"
+            id="chat-input-box"
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
