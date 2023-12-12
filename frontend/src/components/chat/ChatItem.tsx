@@ -49,47 +49,81 @@ const ChatItem = ({
   const auth = useAuth();
   const messageBlocks = extractCodeBlocks(content);
 
-  return role === "model" ? (
+  return (
     <Box
-      sx={{ display: "flex", padding: 2, bgcolor: "#4C5A6E", my: 2, gap: 2 }}
+      sx={{
+        display: "flex",
+        padding: 2,
+        gap: 2,
+        alignSelf: role === "user" ? "flex-end" : "flex-start",
+      }}
     >
-      <Avatar sx={{ ml: 0 }}>
-        <img src="Mika_Icon.png" alt="mika" width={"30px"} />
-      </Avatar>
-      <Box>
+      {role === "model" && (
+        <Avatar
+          sx={{
+            bgcolor: "rgba(255, 0, 0, 0.1)",
+            ml: 0,
+            display: { xs: "none", sm: "none", md: "center" }, // Hide on small and extra-small screens
+          }}
+        >
+          <img src="Mika_Icon.png" alt="mika" width={"40px"} />
+        </Avatar>
+      )}
+      <Box
+        sx={{
+          backgroundColor: role === "model" ? "#E5E5EA" : "#007BFF",
+          borderRadius: 8,
+          maxWidth: "70%",
+          padding: 2,
+        }}
+      >
         {!messageBlocks && (
-          <Typography sx={{ fontSize: "20px" }}> {content}</Typography>
+          <Typography
+            sx={{
+              fontSize: "20px",
+              color: role === "model" ? "black" : "white",
+            }}
+          >
+            {content}
+          </Typography>
         )}
         {messageBlocks &&
           messageBlocks.length &&
-          messageBlocks.map((block) =>
+          messageBlocks.map((block, index) =>
             isCodeBlock(block) ? (
               <SyntaxHighlighter
+                key={index}
                 style={darcula}
                 language={getProgrammingLanguage(block)}
               >
                 {splitBlockFirstWord(block)}
               </SyntaxHighlighter>
             ) : (
-              <Typography sx={{ fontSize: "20px" }}>{block}</Typography>
+              <Typography
+                key={index}
+                sx={{
+                  fontSize: "20px",
+                  color: role === "model" ? "black" : "white",
+                }}
+              >
+                {block}
+              </Typography>
             )
           )}
       </Box>
-    </Box>
-  ) : (
-    <Box
-      sx={{ display: "flex", padding: 2, bgcolor: "#4988CA", gap: 2, my: 2 }}
-    >
-      <Avatar sx={{ ml: 0, bgcolor: "black", color: "white" }}>
-        {/* TODO change this to something more appealing later rather than name + sensei */}
-        {auth?.user?.name[0].toUpperCase()}
-        {"S"}
-      </Avatar>
-      <Box>
-        <Typography color={"white"} fontSize={"20px"}>
-          {content}
-        </Typography>
-      </Box>
+      {role === "user" && (
+        <Avatar
+          sx={{
+            ml: 0,
+            bgcolor: "black",
+            color: "white",
+            display: { xs: "none", sm: "none", md: "center" },
+          }}
+        >
+          {auth?.user?.name[0].toUpperCase()}
+          {"S"}
+        </Avatar>
+      )}
     </Box>
   );
 };

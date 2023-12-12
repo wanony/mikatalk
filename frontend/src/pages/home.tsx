@@ -1,5 +1,6 @@
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import HomeTypeAnimation from "../components/typers/HomeTypeAnimation";
+import Footer from "../components/Footer";
 
 const Home = () => {
   // const theme = useTheme();
@@ -58,6 +59,7 @@ const Home = () => {
       </Box>
       <Footer /> */}
       </Box>
+      <Footer />
     </Box>
   );
 };

@@ -1,8 +1,6 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Avatar, Box, Button, IconButton, Typography } from "@mui/material";
-import { AiOutlineSend } from "react-icons/ai";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Box } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
-import ChatItem from "../components/chat/ChatItem";
 import "../index.css";
 import {
   deleteUserChats,
@@ -11,11 +9,8 @@ import {
 } from "../helpers/api-communicator";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
-type Message = {
-  role: "user" | "model";
-  content: string;
-};
+import SideBar from "../components/sideBar/SideBar";
+import ChatBox from "../components/chat/ChatBox";
 
 // TODO - TEMP ARRAY OF CHAT MESSAGES
 // const tempChat = [
@@ -40,48 +35,6 @@ type Message = {
 const Chat = () => {
   const auth = useAuth();
   const navi = useNavigate();
-  const chatInputRef = useRef<HTMLInputElement | null>(null);
-  const [chatMessages, setChatMessages] = useState<Message[]>([]);
-
-  const handleSubmit = async () => {
-    const content = chatInputRef.current?.value as string;
-    if (chatInputRef && chatInputRef.current) {
-      chatInputRef.current.value = "";
-    }
-    const newMessage: Message = { role: "user", content: content };
-    setChatMessages((previous) => [...previous, newMessage]);
-
-    const chatData = await sendChatRequest(content);
-
-    setChatMessages([...chatData.chats]);
-  };
-
-  const handleDeleteChats = async () => {
-    try {
-      toast.loading("Deleting chats...", { id: "deletechat" });
-      await deleteUserChats();
-      setChatMessages([]);
-      toast.success("Deleted chats successfully!", { id: "deletechat" });
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to delete chats!", { id: "deletechat" });
-    }
-  };
-
-  useLayoutEffect(() => {
-    if (auth?.isLoggedIn && auth.user) {
-      toast.loading("Loading chats...", { id: "loadchats" });
-      getUserChats()
-        .then((data) => {
-          setChatMessages([...data.chats]);
-          toast.success("Successfully loaded chats!", { id: "loadchats" });
-        })
-        .catch((error) => {
-          console.log(error);
-          toast.error("Loading failed!", { id: "loadchats" });
-        });
-    }
-  }, [auth]);
 
   useEffect(() => {
     if (!auth?.user) {
@@ -96,50 +49,12 @@ const Chat = () => {
         flex: 1,
         width: "100%",
         height: "100%",
-        marginTop: 3,
-        gap: 3,
       }}
     >
-      <Box
-        sx={{
-          display: { md: "flex", xs: "none", sm: "none" },
-          flex: 0.2,
-          flexDirection: "column",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-            height: "100%",
-            // bgcolor: "#515E6E",
-            bgcolor: "#F3F7F8",
-            borderRadius: 5,
-            flexDirection: "column",
-            mx: 3,
-          }}
-        >
-          <Avatar
-            sx={{
-              mx: "auto",
-              my: 2,
-              bgcolor: "white",
-              color: "black",
-              fontWeight: 700,
-            }}
-          >
-            {/* TODO change this to something more appealing later rather than name + sensei */}
-            {auth?.user?.name[0].toUpperCase()}
-            {"S"}
-          </Avatar>
-          <Typography sx={{ mx: "auto" }}>
-            You are talking with Mika!
-          </Typography>
-          <Typography sx={{ mx: "auto", my: 4, padding: 3, color: "black" }}>
-            You can talk to her about anything, but avoid sharing personal
-            information!
-          </Typography>
-          <Button
+      <SideBar />
+      <ChatBox />
+
+      {/* <Button
             onClick={handleDeleteChats}
             sx={{
               width: "200px",
@@ -156,86 +71,9 @@ const Chat = () => {
             }}
           >
             Clear Conversation
-          </Button>
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flex: { md: 0.8, xs: 1, sm: 1 },
-          flexDirection: "column",
-          padding: 3,
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: "40px",
-            color: "white",
-            mb: 2,
-            mx: "auto",
-            fontWeight: 600,
-          }}
-        >
-          {/* TODO - Update this to reflect the real model name */}
-          Model - MikaLLama-0.1
-        </Typography>
-        <Box
-          sx={{
-            width: "100%",
-            height: "60vh",
-            borderRadius: 3,
-            mx: "auto",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "scroll",
-            overflowX: "hidden",
-            scrollBehavior: "smooth",
-          }}
-        >
-          {chatMessages.map((chat, index) => (
-            <ChatItem content={chat.content} role={chat.role} key={index} />
-          ))}
-        </Box>
-        <div
-          style={{
-            width: "100%",
-            padding: "10px",
-            borderRadius: 8,
-            backgroundColor: "#515E6E",
-            display: "flex",
-            margin: "auto",
-          }}
-        >
-          {" "}
-          <input
-            type="text"
-            id="chat-input-box"
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                handleSubmit();
-              }
-            }}
-            ref={chatInputRef}
-            placeholder="Message Mika..."
-            style={{
-              width: "100%",
-              backgroundColor: "transparent",
-              padding: "10px",
-              border: "none",
-              outline: "none",
-              color: "white",
-              fontSize: "20px",
-            }}
-          />
-          <IconButton
-            onClick={handleSubmit}
-            sx={{ marginLeft: "auto", color: "white" }}
-          >
-            <AiOutlineSend />
-          </IconButton>
-        </div>
-      </Box>
+          </Button> */}
+
+      {/* From here is the Chat Box and Title */}
     </Box>
   );
 };
