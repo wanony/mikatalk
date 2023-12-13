@@ -139,8 +139,9 @@ const ChatBox = () => {
       >
         <TextField
           id="chat-input-box"
-          variant="outlined"
+          multiline
           autoComplete="off"
+          sx={{}}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.preventDefault();
