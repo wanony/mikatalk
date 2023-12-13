@@ -1,6 +1,6 @@
-import { Box, IconButton, Typography } from "@mui/material";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { AiOutlineSend } from "react-icons/ai";
+import { Box, IconButton, TextField } from "@mui/material";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { FaCircleArrowUp } from "react-icons/fa6";
 import ChatItem from "./ChatItem";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +24,9 @@ const ChatBox = () => {
 
   const handleSubmit = async () => {
     const content = chatInputRef.current?.value as string;
+    if (!content) {
+      return;
+    }
     if (chatInputRef && chatInputRef.current) {
       chatInputRef.current.value = "";
     }
@@ -84,9 +87,10 @@ const ChatBox = () => {
         flexDirection: "column",
         alignContent: "center",
         padding: 5,
+        height: "100%",
       }}
     >
-      <Typography
+      {/* <Typography
         sx={{
           fontSize: "20px",
           color: "black",
@@ -95,14 +99,16 @@ const ChatBox = () => {
           fontWeight: 400,
         }}
       >
-        {/* TODO - Update this to reflect the real model name */}
+        TODO - Update this to reflect the real model name
         Model - MikaLLama-0.1
-      </Typography>
+      </Typography> */}
       <Box
         ref={chatBoxRef}
         sx={{
           width: "100%",
-          height: "60vh",
+          height: "100%",
+          maxHeight: "85vh",
+          maxWidth: "70vw",
           borderRadius: 0,
           mx: "auto",
           display: "flex",
@@ -110,6 +116,7 @@ const ChatBox = () => {
           overflow: "scroll",
           overflowX: "hidden",
           scrollBehavior: "smooth",
+          marginTop: "-24px",
         }}
       >
         {chatMessages.map((chat, index) => (
@@ -122,40 +129,33 @@ const ChatBox = () => {
       <div
         style={{
           width: "100%",
-          padding: "10px",
+          padding: "5px",
           borderRadius: 8,
           backgroundColor: "#515E6E",
           display: "flex",
           margin: "auto",
+          maxWidth: "70vw",
         }}
       >
-        {" "}
-        <input
-          type="text"
+        <TextField
           id="chat-input-box"
+          variant="outlined"
+          autoComplete="off"
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.preventDefault();
               handleSubmit();
             }
           }}
-          ref={chatInputRef}
+          inputRef={chatInputRef}
           placeholder="Message Mika..."
           style={{
-            width: "100%",
-            backgroundColor: "transparent",
-            padding: "10px",
-            border: "none",
-            outline: "none",
-            color: "white",
-            fontSize: "20px",
+            flex: 1,
+            marginRight: "10px",
           }}
         />
-        <IconButton
-          onClick={handleSubmit}
-          sx={{ marginLeft: "auto", color: "white" }}
-        >
-          <AiOutlineSend />
+        <IconButton onClick={handleSubmit} sx={{ color: "white" }}>
+          <FaCircleArrowUp />
         </IconButton>
       </div>
     </Box>

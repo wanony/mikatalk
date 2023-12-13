@@ -9,7 +9,7 @@ const Footer = () => {
         width: "100%",
         minHeight: "20vh",
         maxHeight: "30vh",
-        backgroundColor: "white", // Set the background color as needed
+        backgroundColor: "rgb(240, 240, 240)", // Set the background color as needed
         textAlign: "center",
       }}
     >

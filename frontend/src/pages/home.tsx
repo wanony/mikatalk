@@ -13,7 +13,7 @@ const Home = () => {
           flexDirection: "column",
           alignItems: "center",
           mx: "auto",
-          mt: 3,
+          mt: 10,
         }}
       >
         <Box>

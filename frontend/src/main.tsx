@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { Toaster } from "react-hot-toast";
 import axios from "axios";
+import { SidebarProvider } from "./components/shared/SideBarContext.tsx";
 axios.defaults.baseURL = "http://localhost:5050/api/v1";
 axios.defaults.withCredentials = true;
 
@@ -23,7 +24,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <Toaster position="top-right" />
-          <App />
+          <SidebarProvider>
+            <App />
+          </SidebarProvider>
         </ThemeProvider>
       </BrowserRouter>
     </AuthProvider>
